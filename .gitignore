@@ -1,0 +1,7 @@
+Gemfile.lock
+*.gems
+gems
+
+#vim temporary files
+*.swp
+*.swo
