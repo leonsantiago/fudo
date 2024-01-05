@@ -1,3 +1,5 @@
+require 'json'
+
 class MainController
   attr_reader :request
 
@@ -8,7 +10,7 @@ class MainController
   private
 
   def build_response(body, status: 200)
-    [status, { "Content-Type:" => "application/json" }, [body]]
+    [status, { "Content-Type" => "application/json" }, [body].to_json]
   end
 
   def params
