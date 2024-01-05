@@ -13,6 +13,16 @@ class Router
 
   private
 
+  def controller_name
+    "#{route_info[:resource].capitalize}Controller"
+  end
+
+  def controller_class
+    Object.const_get(controller_name)
+  rescue NameError
+    nil
+  end
+
   def not_found(msg = 'Not Found')
     [404, { "Content-Type:" => "application/json" }, [msg]]
   end
