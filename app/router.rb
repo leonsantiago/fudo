@@ -4,11 +4,18 @@ class Router
   end
 
   def route!
-    if @request.path == '/'
-      [200, { "Content-Type" => "application/json" }, ["Return 200 from router"]] 
-    else
-      not_found
+    if klass = controller_class
+      route_into_request_params!
+
+      controller = klass.new(@request)
+      action = route_info(:action)
+
+      if controller.respondo_to?(action)
+        return controller.public_send(action)
+      end
     end
+
+    not_found
   end
 
   private
@@ -46,5 +53,9 @@ class Router
     else
       [fragment, :show]
     end
+  end
+
+  def route_into_request_params!
+    @request.params.merge!(route_info)
   end
 end
