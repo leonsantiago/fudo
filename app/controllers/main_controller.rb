@@ -1,14 +1,17 @@
-app_files = File.expand_path('../app/**/*.rb', __FILE__)
-Dir.glob(app_files).each { |file| require(file) }
-
 class MainController
-  def call(env)
-    request = Rack::Request.new(env)
-    serve_request(request)
+  attr_reader :request
+
+  def initialize(request)
+    @request = request
   end
 
-  def serve_request(request)
-    Router.new(request).route!
+  private
+
+  def build_response(body, status: 200)
+    [status, { "Content-Type:" => "application/json" }, [body]]
   end
 
+  def params
+    request.params
+  end
 end
