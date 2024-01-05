@@ -1,3 +1,5 @@
+require 'json'
+
 class Router
   def initialize(request)
     @request = request
@@ -31,7 +33,7 @@ class Router
   end
 
   def not_found(msg = 'Not Found')
-    [404, { "Content-Type:" => "application/json" }, [msg]]
+    [404, { "Content-Type" => "application/json" }, [msg.to_json]]
   end
 
   def route_info
@@ -48,7 +50,7 @@ class Router
     when 'new'
       [nil, :new]
     when nil
-      action = @request.get? ? :index, :create
+      action = @request.get? ? :index : :create
       [nil, action]
     else
       [fragment, :show]
