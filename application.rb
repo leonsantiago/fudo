@@ -1,5 +1,14 @@
+app_files = File.expand_path('../app/**/*.rb', __FILE__)
+Dir.glob(app_files).each { |file| require(file) }
+
 class Application
-  def cal(env)
-    ['200', { 'Content-type:' => 'application/json' }, ['Return 200 from application']]
+  def call(env)
+    request = Rack::Request.new(env)
+    serve_request(request)
   end
+
+  def serve_request(request)
+    Router.new(request).route!
+  end
+
 end
