@@ -40,7 +40,12 @@ class Router
   def route_info
     @route_info ||= begin
       resource = path_fragments[0] || 'main'
-      id, action = get_id_and_action(path_fragments[1])
+    
+      if resource == "login"
+       id, action = handle_login
+      else
+        id, action = get_id_and_action(path_fragments[1])
+      end
       
       { resource: resource, action: action, id: id }
     end
@@ -48,14 +53,16 @@ class Router
 
   def get_id_and_action(fragmented_path)
     case fragmented_path
-    when 'new'
-      [nil, :new]
     when nil
       action = @request.get? ? :index : :create
       [nil, action]
     else
       [fragmented_path, :show]
     end
+  end
+
+  def handle_login
+    [nil, :login]
   end
 
   def route_into_request_params!
