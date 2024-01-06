@@ -7,3 +7,5 @@ gem "rack", "~> 3.0"
 gem "byebug", "~> 11.1"
 
 gem "async", "~> 1.31"
+
+gem "jwt", "~> 2.7"
