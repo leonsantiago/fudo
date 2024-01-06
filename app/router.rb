@@ -1,4 +1,5 @@
 require 'json'
+require 'byebug'
 
 class Router
   def initialize(request)
@@ -10,9 +11,9 @@ class Router
       route_into_request_params!
 
       controller = klass.new(@request)
-      action = route_info(:action)
+      action = route_info[:action]
 
-      if controller.respondo_to?(action)
+      if controller.respond_to?(action)
         return controller.public_send(action)
       end
     end
@@ -53,11 +54,15 @@ class Router
       action = @request.get? ? :index : :create
       [nil, action]
     else
-      [fragment, :show]
+      [fragmented_path, :show]
     end
   end
 
   def route_into_request_params!
     @request.params.merge!(route_info)
+  end
+
+  def path_fragments
+    @fragments ||= @request.path.split("/").reject { |s| s.empty? }
   end
 end
