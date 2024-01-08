@@ -25,9 +25,33 @@ class AuthenticationService
     JWT.encode(payload, 'thissecretkey', 'HS256')
   end
 
+  def self.extract_token(request)
+    auth_header = request.env['HTTP_AUTHORIZATION']
+    return unless auth_header
+
+    _, token = auth_header.split(' ', 2)
+    return token
+  end
+
+  def self.authenticate?(request)
+    begin
+      token = self.extract_token(request)
+      decoded_token = JWT.decode(token, 'thissecretkey', true, algorithm: 'HS256')
+      return true
+    rescue JWT::DecodeError
+      return false 
+    end
+
+  end
+
   def valid_credentials?(username, password)
     user = @@user.find {|user| user[:username] == username }
 
     user[:password] == password
   end
+
+  def self.not_found
+    [404, { "Content-Type" => "application/json" }, ['Not found'.to_json]]
+  end
+
 end

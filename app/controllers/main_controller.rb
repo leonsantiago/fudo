@@ -18,6 +18,10 @@ class MainController
     [302, { "Location" => uri, 'Content-Type' => 'application/json' }, []]
   end
 
+  def unauthorized_response
+    build_response('Unauthorized', status: 401)
+  end
+
   def params
     request.params
   end
