@@ -7,9 +7,10 @@ class LoginController < MainController
     username = params['username']
     password = params['password']
 
-    token = { token: generate_token(username, password) }
+    token = generate_token(username, password)
+    body = { token: token }
 
-    token ? success_response(token) : unauthorized_response
+    token ? success_response(token) : unauthorized_response 
 
   end
 
@@ -20,9 +21,4 @@ class LoginController < MainController
   def success_response(token)
     build_response(token, status: 200) 
   end
-
-  def unauthorized_response
-    build_response('Unauthorized', status: 401)
-  end
-
 end
