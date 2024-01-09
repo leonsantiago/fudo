@@ -8,7 +8,7 @@ class Application
   end
 
   def serve_request(request)
-    Router.new(request).route!
+    Router.new(request).call
   end
 
 

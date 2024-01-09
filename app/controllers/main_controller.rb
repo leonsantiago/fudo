@@ -1,9 +1,6 @@
 require 'json'
-require 'byebug'
 
 class MainController
-  attr_reader :request
-
   def initialize(request)
     @request = request
   end
@@ -22,7 +19,7 @@ class MainController
     build_response('Unauthorized', status: 401)
   end
 
-  def params
-    request.params
+  def bad_request_response
+    build_response('Bad request', status: 400)
   end
 end
