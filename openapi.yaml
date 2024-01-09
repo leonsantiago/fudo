@@ -1,0 +1,160 @@
+openapi: 3.0.3
+info:
+  title: Fudo - OpenAPI 3.0
+  description: |-
+    It is a small API made with Ruby and Rack for Fudo.
+    
+    Links:
+    - [Repository](https://github.com/leonsantiago/fudo)
+  contact:
+    email: santiagoleon747@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+tags:
+  - name: Fudo
+    description: Desafio para Fudo
+paths:
+  /products:
+    post:
+      security:
+      - bearerAuth: []
+      tags:
+        - producto
+      summary: Añadir un nuevo producto
+      description: Añadir un nuevo producto
+      operationId: add_product
+      parameters:
+        - name: name
+          in: query
+          description: Nombre del producto
+          required: true
+          schema:
+            type: string
+            default: 'Engine'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '400':
+          description: Invalid input
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+        - producto
+      summary: Muestra todos los productos
+      operationId: get_products
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+  /products/{id}:
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+        - producto
+      summary: Muestra un producto
+      operationId: get_product
+      parameters:
+        - name: id
+          in: path
+          description: Identificador
+          required: true
+          schema:
+            type: string
+            default: 1
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+  /user/login:
+    get:
+      tags:
+        - user
+      summary: Logs user into the system
+      description: ''
+      operationId: login_user
+      parameters:
+        - name: username
+          in: query
+          description: The user name for login
+          required: false
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the user
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Invalid username/password supplied
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 100000
+        name:
+          type: string
+          example: Engine
+    AllProducts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Product'
+      example:
+        - id: 1
+          name: 'Engine'
+        - id: 2
+          name: 'Brakes'
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: username
+        password:
+          type: string
+          example: 'easypassword'
