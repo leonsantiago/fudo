@@ -11,9 +11,8 @@ class LoginController < MainController
   def call(request)
     username, password = get_user_and_password(request)
     token = generate_token(username, password)
-    body = { token: token }
-
-    token ? success_response(token) : unauthorized_response 
+      body = { token: token }
+      token ? success_response(token) : user_not_found
   end
 
   def generate_token(username, password)
@@ -29,5 +28,9 @@ class LoginController < MainController
   def get_user_and_password(request)
     params = JSON.parse(request.body.read)
     [params["username"], params["password"]]
+  end
+
+  def user_not_found
+    [404, { "Content-Type" => "application/json" }, ['User or password is incorrect'.to_json]]
   end
 end

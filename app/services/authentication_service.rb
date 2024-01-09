@@ -16,6 +16,8 @@ class AuthenticationService
   def call
     if valid_credentials?(username, password)
       token = generate_token(username)
+    else
+      return false
     end
   end
 
@@ -49,9 +51,4 @@ class AuthenticationService
 
     user[:password] == password
   end
-
-  def self.not_found
-    [404, { "Content-Type" => "application/json" }, ['Not found'.to_json]]
-  end
-
 end

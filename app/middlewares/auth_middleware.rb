@@ -18,7 +18,7 @@ class AuthMiddleware
     if AuthenticationService.authenticate?(request)
       @app.call(env)
     else
-      [404, { "Content-Type" => "application/json" }, ['Not found'.to_json]]
+      [401, { "Content-Type" => "application/json" }, ['Unauthorized'.to_json]]
     end
   end
 
