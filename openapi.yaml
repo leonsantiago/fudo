@@ -12,6 +12,8 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 1.0.11
+servers:
+- url: http:localhost:9292/
 tags:
   - name: Fudo
     description: Desafio para Fudo
@@ -42,6 +44,8 @@ paths:
                 $ref: '#/components/schemas/Product'
         '400':
           description: Invalid input
+        '401':
+          description: Unauthorized
     get:
       security:
       - bearerAuth: []
@@ -58,6 +62,8 @@ paths:
                 $ref: '#/components/schemas/Product'
         '404':
           description: Product not found
+        '401':
+          description: Unauthorized
   /products/{id}:
     get:
       security:
@@ -121,11 +127,12 @@ paths:
             application/json:
               schema:
                 type: string
+                example: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTcwNDg0MzE4MH0.QywlYiZH5lV5weigNkxiCaY81SOuQs2QzdKANt6Hae0'
         '400':
           description: Invalid username/password supplied
 components:
   securitySchemes:
-    bearerAuth:            # arbitrary name for the security scheme
+    bearerAuth:       
       type: http
       scheme: bearer
       bearerFormat: JWT
