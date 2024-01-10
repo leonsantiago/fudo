@@ -26,8 +26,12 @@ class LoginController < MainController
   private
 
   def get_user_and_password(request)
-    params = JSON.parse(request.body.read)
-    [params["username"], params["password"]]
+    if request.body.read.empty?
+      user_not_found
+    else
+      params = JSON.parse(request.body.read)
+      [params["username"], params["password"]]
+    end
   end
 
   def user_not_found
