@@ -130,6 +130,24 @@ paths:
                 example: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VybmFtZSIsImV4cCI6MTcwNDg0MzE4MH0.QywlYiZH5lV5weigNkxiCaY81SOuQs2QzdKANt6Hae0'
         '400':
           description: Invalid username/password supplied
+  /AUTHORS:
+    get:
+      tags:
+        - author
+      summary: Autor de la API
+      operationId: show_authors
+      responses:
+        '200':
+          description: successful operation
+  /openapi.yaml:
+    get:
+      tags:
+        - openapi yaml file 
+      summary: OpenAPI specification 
+      operationId: openapi_specification 
+      responses:
+        '200':
+          description: successful operation
 components:
   securitySchemes:
     bearerAuth:       
