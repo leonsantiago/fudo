@@ -49,6 +49,6 @@ class AuthenticationService
   def valid_credentials?(username, password)
     user = @@user.find {|user| user[:username] == username }
 
-    user[:password] == password
+    user[:password] == password if user
   end
 end
